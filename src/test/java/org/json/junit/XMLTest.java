@@ -65,6 +65,68 @@ public class XMLTest {
     @Rule
     public TemporaryFolder testFolder = new TemporaryFolder();
 
+    //milestone3
+    @Test
+    public void testtoJSONObjectFunction_add() {
+        String xmlStr = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"+
+                "<contact>\n"+
+                "  <address>\n" +
+                "    <street>Ave of Nowhere</street>\n" +
+                "    <zipcode>92614</zipcode>\n" +
+                "  </address>\n" +
+                "  <nick>Crista </nick>\n"+
+                "  <name>Crista Lopes</name>\n" +
+                "</contact>";
+        Function<String, String> fun = key -> "mswe262p_"+ key;
+
+        JSONObject result = XML.toJSONObject(new StringReader(xmlStr), fun);
+        String expectedStr = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"+
+                "<mswe262p_contact>\n"+
+                "  <mswe262p_address>\n" +
+                "    <mswe262p_street>Ave of Nowhere</mswe262p_street>\n" +
+                "    <mswe262p_zipcode>92614</mswe262p_zipcode>\n" +
+                "  </mswe262p_address>\n" +
+                "  <mswe262p_nick>Crista </mswe262p_nick>\n"+
+                "  <mswe262p_name>Crista Lopes</mswe262p_name>\n" +
+                "</mswe262p_contact>";
+        JSONObject expectedJsonObject = XML.toJSONObject(expectedStr);
+        Util.compareActualVsExpectedJsonObjects(result,expectedJsonObject);
+    }
+
+    //milestone3
+    @Test
+    public void testtoJSONObjectFunction_reverse() {
+        String xmlStr = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"+
+                "<contact>\n"+
+                "  <address>\n" +
+                "    <street>Ave of Nowhere</street>\n" +
+                "    <zipcode>92614</zipcode>\n" +
+                "  </address>\n" +
+                "  <nick>Crista </nick>\n"+
+                "  <name>Crista Lopes</name>\n" +
+                "</contact>";
+        Function<String, String> fun = key -> {
+            StringBuilder sb = new StringBuilder();
+            sb.append(key);
+            sb.reverse();
+            return sb.toString();
+        };
+
+
+        JSONObject result = XML.toJSONObject(new StringReader(xmlStr), fun);
+
+        String expectedStr = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"+
+                "<tcatnoc>\n"+
+                "  <sserdda>\n" +
+                "    <teerts>Ave of Nowhere</teerts>\n" +
+                "    <edocpiz>92614</edocpiz>\n" +
+                "  </sserdda>\n" +
+                "  <kcin>Crista </kcin>\n"+
+                "  <eman>Crista Lopes</eman>\n" +
+                "</tcatnoc>";
+        JSONObject expectedJsonObject = XML.toJSONObject(expectedStr);
+        Util.compareActualVsExpectedJsonObjects(result,expectedJsonObject);
+    }
     
     /**
      * JSONObject from a null XML string.
@@ -305,6 +367,7 @@ public class XMLTest {
         compareFileToJSONObject(xmlStr, expectedStr);
     }
 
+    
     /**
      * Tests to verify that supported escapes in XML are converted to actual values.
      */
